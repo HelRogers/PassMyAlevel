@@ -4093,7 +4093,7 @@ function irpCheckApi() {
 // ============ API CALL ============
 // Set this to your Cloudflare Worker URL. Leave as null to call Anthropic
 // directly (only works inside Claude.ai artifact context).
-const IRP_API_ENDPOINT = null;  // e.g. 'https://your-worker.your-subdomain.workers.dev'
+const IRP_API_ENDPOINT = 'https://irp-api-proxy.helenor.workers.dev';  // e.g. 'https://your-worker.your-subdomain.workers.dev'
 
 async function irpCallClaude(prompt, systemPrompt) {
   const useWorker = IRP_API_ENDPOINT !== null;

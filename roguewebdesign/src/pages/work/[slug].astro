@@ -1,0 +1,365 @@
+---
+// Case study template. One page is generated for every entry in src/data/projects.ts.
+import { Picture } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import CtaBlock from '../../components/CtaBlock.astro';
+import Arrow from '../../components/Arrow.astro';
+import { projects, type Project } from '../../data/projects';
+
+export function getStaticPaths() {
+  return projects.map((project, i) => ({
+    params: { slug: project.slug },
+    props: { project, index: i, next: projects[(i + 1) % projects.length] },
+  }));
+}
+
+interface Props {
+  project: Project;
+  index: number;
+  next: Project;
+}
+const { project, index, next } = Astro.props;
+---
+
+<Base title={`${project.name} case study`} description={`${project.summary} A ${project.concept ? 'concept build' : 'website'} for a ${project.trade.toLowerCase()} business in ${project.area}, by roguewebdesign.`}>
+  <article style={`--accent: ${project.accent}; --on-accent: ${project.onAccent}`}>
+    <header class="cs-hero">
+      <div class="container">
+        <p class="label eyebrow" data-reveal>
+          <a class="link" href="/work/">Work</a>&nbsp;/ {String(index + 1).padStart(2, '0')}
+        </p>
+        <h1 class="cs-hero__title" data-split>{project.name}</h1>
+        <p class="cs-hero__headline" data-reveal>{project.headline}</p>
+
+        <dl class="cs-meta" data-reveal-group>
+          <div><dt class="label">Trade</dt><dd>{project.trade}</dd></div>
+          <div><dt class="label">Area</dt><dd>{project.area}</dd></div>
+          <div><dt class="label">Type</dt><dd>{project.concept ? 'Concept build' : 'Client website'}</dd></div>
+          <div><dt class="label">Built by</dt><dd>roguewebdesign</dd></div>
+        </dl>
+      </div>
+    </header>
+
+    <div class="container">
+      <div class="cs-shot" data-unveil>
+        <div class="cs-shot__frame" data-parallax="top">
+          <Picture
+            src={project.image}
+            alt={project.imageAlt}
+            formats={['avif', 'webp']}
+            widths={[640, 1000, 1400, 2000, 2400]}
+            sizes="(min-width: 1440px) 1360px, 94vw"
+            loading="eager"
+            fetchpriority="high"
+          />
+        </div>
+      </div>
+    </div>
+
+    <section class="section cs-brief" aria-labelledby="brief-title">
+      <div class="container cs-two">
+        <p id="brief-title" class="label eyebrow">The brief</p>
+        <div>
+          <p class="cs-brief__text" data-split>{project.brief}</p>
+          {project.concept && (
+            <p class="muted cs-note" data-reveal>
+              This is a concept build: a design made to show what a site for this trade could look like, rather than paid client work.
+            </p>
+          )}
+        </div>
+      </div>
+    </section>
+
+    <section class="section theme-ink cs-decisions" aria-labelledby="decisions-title">
+      <div class="container">
+        <p class="label eyebrow">Design decisions</p>
+        <h2 id="decisions-title" class="h2" data-split>What makes it work</h2>
+        <ol class="decision-list" role="list" data-reveal-group>
+          {project.decisions.map((d, i) => (
+            <li class="decision">
+              <span class="label decision__num">{String(i + 1).padStart(2, '0')}</span>
+              <h3 class="decision__title">{d.title}</h3>
+              <p class="decision__body">{d.body}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <section class="section cs-system" aria-labelledby="system-title">
+      <div class="container cs-two">
+        <p id="system-title" class="label eyebrow">Look and feel</p>
+        <div class="cs-system__body">
+          <ul class="swatches" role="list" data-reveal-group>
+            {project.palette.map((hex) => (
+              <li class="swatch">
+                <span class="swatch__chip" style={`background: ${hex}`}></span>
+                <span class="label label--fg">{hex}</span>
+              </li>
+            ))}
+          </ul>
+          <p class="cs-system__type" data-reveal><span class="label">Type</span> {project.type}</p>
+        </div>
+      </div>
+    </section>
+
+    <nav class="next-project" aria-label="Next case study">
+      <a href={`/work/${next.slug}/`} class="next-project__link" data-cursor-text="Next">
+        <span class="container next-project__inner">
+          <span class="label">Next case study</span>
+          <span class="next-project__name">{next.name}</span>
+          <span class="next-project__go" aria-hidden="true"><Arrow class="" /></span>
+        </span>
+      </a>
+    </nav>
+  </article>
+
+  <CtaBlock title="Want a site like this for your trade?" />
+</Base>
+
+<style>
+  .cs-hero {
+    padding-top: calc(var(--header-h) + var(--space-2xl));
+    padding-bottom: var(--space-xl);
+  }
+
+  .cs-hero .eyebrow a {
+    text-decoration: none;
+    color: var(--fg);
+  }
+
+  .cs-hero__title {
+    font-size: var(--step-6);
+    line-height: 0.86;
+    letter-spacing: -0.05em;
+    max-width: 12ch;
+  }
+
+  .cs-hero__headline {
+    margin-top: var(--space-l);
+    font-size: var(--step-2);
+    line-height: 1.25;
+    max-width: 30ch;
+  }
+
+  .cs-meta {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 9rem), 1fr));
+    gap: var(--space-m);
+    margin-top: var(--space-xl);
+    padding-top: var(--space-m);
+    border-top: 1px solid var(--color-rule);
+  }
+
+  .cs-meta dd {
+    margin-top: 0.25rem;
+    font-weight: 500;
+  }
+
+  .cs-shot {
+    position: relative;
+    z-index: 1;
+    box-shadow: 0 0 0 1px var(--color-ink);
+  }
+
+  .cs-shot__frame {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+  }
+
+  .cs-shot__frame :global(img) {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 116%;
+    object-fit: cover;
+    object-position: top;
+  }
+
+  .cs-two {
+    display: grid;
+    align-items: start;
+    gap: var(--space-m) var(--space-xl);
+  }
+
+  @media (min-width: 900px) {
+    .cs-two {
+      grid-template-columns: 1fr 2.2fr;
+    }
+  }
+
+  .cs-brief__text {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: var(--step-3);
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    max-width: 28ch;
+  }
+
+  .cs-note {
+    margin-top: var(--space-l);
+    font-size: var(--step--1);
+  }
+
+  .decision-list {
+    list-style: none;
+    padding: 0;
+    margin-top: var(--space-xl);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+    border-top: 1px solid var(--line);
+    border-left: 1px solid var(--line);
+  }
+
+  .decision {
+    display: grid;
+    align-content: start;
+    gap: var(--space-s);
+    padding: var(--space-l) var(--space-m);
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    position: relative;
+    isolation: isolate;
+  }
+
+  .decision::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--accent);
+    opacity: 0;
+    transition: opacity var(--dur-slow) var(--ease-out);
+  }
+
+  .decision:hover::before {
+    opacity: 0.12;
+  }
+
+  .decision__num {
+    color: var(--color-signal);
+  }
+
+  .decision__title {
+    font-size: var(--step-2);
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+  }
+
+  .decision__body {
+    color: var(--fg-muted);
+  }
+
+  .cs-system__body {
+    display: grid;
+    gap: var(--space-l);
+  }
+
+  .swatches {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+    gap: var(--space-s);
+  }
+
+  .swatch {
+    display: grid;
+    gap: var(--space-2xs);
+  }
+
+  .swatch__chip {
+    aspect-ratio: 1;
+    box-shadow: inset 0 0 0 1px rgb(14 14 12 / 0.15);
+  }
+
+  .cs-system__type {
+    display: grid;
+    gap: 0.25rem;
+    font-size: var(--step-1);
+  }
+
+  .next-project {
+    position: relative;
+    z-index: 1;
+    border-top: 1px solid var(--color-ink);
+  }
+
+  .next-project__link {
+    display: block;
+    text-decoration: none;
+    background: var(--color-paper);
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+  }
+
+  .next-project__link::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--color-ink);
+    transform: translateY(101%);
+    transition: transform 0.7s var(--ease-out);
+  }
+
+  .next-project__link:hover {
+    color: var(--color-paper);
+  }
+
+  .next-project__link:hover::before {
+    transform: translateY(0);
+  }
+
+  .next-project__link:hover .label {
+    color: var(--color-ash);
+  }
+
+  .next-project__inner {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: var(--space-s) var(--space-l);
+    padding-block: var(--space-xl);
+  }
+
+  .next-project__inner .label {
+    grid-column: 1 / -1;
+  }
+
+  .next-project__name {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: var(--step-5);
+    letter-spacing: -0.045em;
+    line-height: 0.9;
+    transition: transform 0.7s var(--ease-out);
+  }
+
+  .next-project__link:hover .next-project__name {
+    transform: translateX(1rem);
+  }
+
+  .next-project__go {
+    display: grid;
+    place-items: center;
+    width: clamp(3.5rem, 2.5rem + 3vw, 6rem);
+    aspect-ratio: 1;
+    background: var(--color-signal);
+    color: var(--color-ink);
+    transition: transform 0.7s var(--ease-out);
+  }
+
+  .next-project__go :global(svg) {
+    width: 40%;
+    height: 40%;
+  }
+
+  .next-project__link:hover .next-project__go {
+    transform: rotate(-45deg);
+  }
+</style>

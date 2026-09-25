@@ -1,0 +1,62 @@
+---
+import Base from '../layouts/Base.astro';
+import Arrow from '../components/Arrow.astro';
+---
+
+<Base title="Page not found" description="This page has gone rogue." noindex>
+  <section class="lost">
+    <div class="container lost__inner">
+      <p class="label eyebrow">Error 404</p>
+      <p class="lost__num" aria-hidden="true"><span>4</span><span class="lost__rogue">0</span><span>4</span></p>
+      <h1 class="lost__title" data-split>This page has gone rogue.</h1>
+      <p class="lead" data-reveal>It might have moved, or the link might be wrong. Either way, it is not here. These will get you back on track.</p>
+      <div class="btn-row" data-reveal>
+        <div data-magnetic><a class="btn" href="/">Back to the home page <Arrow /></a></div>
+        <div data-magnetic><a class="btn btn--ghost" href="/work/">See the work</a></div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .lost {
+    position: relative;
+    min-height: 100svh;
+    display: flex;
+    align-items: center;
+    padding-block: calc(var(--header-h) + var(--space-l)) var(--space-xl);
+  }
+
+  .lost__inner {
+    display: grid;
+    gap: var(--space-m);
+  }
+
+  .lost__num {
+    display: flex;
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(8rem, 5rem + 22vw, 24rem);
+    line-height: 0.8;
+    letter-spacing: -0.06em;
+    max-width: none;
+  }
+
+  .lost__rogue {
+    display: inline-block;
+    color: var(--color-signal);
+    transform: rotate(-18deg) translateY(0.08em);
+    transform-origin: 50% 90%;
+    animation: wobble 4s var(--ease-in-out) infinite;
+  }
+
+  @keyframes wobble {
+    0%, 100% { transform: rotate(-18deg) translateY(0.08em); }
+    50% { transform: rotate(-8deg) translateY(0.02em); }
+  }
+
+  .lost__title {
+    font-size: var(--step-4);
+    letter-spacing: -0.04em;
+  }
+</style>

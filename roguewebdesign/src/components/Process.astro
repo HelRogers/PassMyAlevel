@@ -1,0 +1,117 @@
+---
+import { process } from '../data/services';
+interface Props {
+  label?: string;
+}
+const { label = '(05) How it works' } = Astro.props;
+---
+
+  <section class="section process-section" aria-labelledby="process-title">
+    <div class="container process-section__grid">
+      <div class="process-section__head">
+        <p class="label eyebrow">{label}</p>
+        <h2 id="process-title" class="h2" data-split>From first chat to phone ringing</h2>
+        <p class="muted process-section__intro" data-reveal>Four steps, no jargon. You always know what is happening and what it costs.</p>
+      </div>
+      <div class="process-list" data-process>
+        <span class="process-list__line" aria-hidden="true" data-process-line></span>
+        <ol class="process-list__steps" role="list">
+        {process.map((step) => (
+          <li class="process-step" data-process-step>
+            <span class="process-step__num label">{step.number}</span>
+            <h3 class="process-step__title">{step.title}</h3>
+            <p class="muted">{step.body}</p>
+          </li>
+        ))}
+        </ol>
+      </div>
+    </div>
+  </section>
+
+
+<style>
+  .process-section__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 24rem), 1fr));
+    gap: var(--space-xl);
+  }
+
+  .process-section__head {
+    align-self: start;
+  }
+
+  @media (min-width: 900px) {
+    .process-section__head {
+      position: sticky;
+      top: calc(var(--header-h) + var(--space-l));
+    }
+  }
+
+  .process-section__intro {
+    margin-top: var(--space-m);
+  }
+
+  .process-list {
+    position: relative;
+    padding-left: var(--space-l);
+  }
+
+  .process-list__steps {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: var(--space-xl);
+  }
+
+  .process-list::before,
+  .process-list__line {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--color-rule);
+  }
+
+  .process-list__line {
+    background: var(--color-signal);
+    transform-origin: top;
+  }
+
+  .process-step {
+    position: relative;
+    display: grid;
+    gap: var(--space-xs);
+    padding-block: var(--space-s);
+  }
+
+  .process-step::before {
+    content: '';
+    position: absolute;
+    left: calc(-1 * var(--space-l) - 6px);
+    top: calc(var(--space-s) + 0.2rem);
+    width: 14px;
+    height: 14px;
+    background: var(--color-paper);
+    border: 2px solid var(--color-rule);
+    transition: background-color var(--dur-slow) var(--ease-out), border-color var(--dur-slow) var(--ease-out);
+  }
+
+  .process-step__title {
+    font-size: var(--step-4);
+    letter-spacing: -0.045em;
+    transition: transform var(--dur-slow) var(--ease-out);
+    transform-origin: left;
+  }
+
+  .process-step:global(.is-active)::before {
+    background: var(--color-signal);
+    border-color: var(--color-ink);
+  }
+
+  .process-step:global(.is-active) .process-step__title {
+    transform: translateX(0.5rem);
+  }
+
+</style>

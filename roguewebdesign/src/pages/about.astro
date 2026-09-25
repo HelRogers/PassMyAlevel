@@ -1,0 +1,128 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Placeholder from '../components/Placeholder.astro';
+import CtaBlock from '../components/CtaBlock.astro';
+import { site } from '../data/site';
+
+const principles = [
+  { title: 'One person, start to finish', body: 'You talk to me, I design it, I build it, and I pick up when something needs changing.' },
+  { title: 'Plain English', body: 'No jargon, no hundred-page proposals. If something matters, I will explain it in a sentence.' },
+  { title: 'Phones first', body: 'Your customers are on a roof, in a van or on the sofa. The site has to work in their hand first.' },
+  { title: 'Straight prices', body: 'You know what it costs before anything starts. Sites begin at £300.' },
+];
+---
+
+<Base title="About Euan" description={`roguewebdesign is ${site.owner}, a freelance web designer in ${site.region} who builds websites for tradespeople.`}>
+  <PageHero label="(01) About" title="Hi, I’m Euan." />
+
+  <section class="section about-intro" aria-label="About Euan">
+    <div class="container about-intro__grid">
+      <div class="about-intro__photo" data-reveal>
+        {site.photo ? null : <Placeholder block label="photo of Euan (portrait, at least 1200px tall)" class="about-intro__ph" />}
+      </div>
+      <div class="about-intro__text">
+        <p class="about-intro__big" data-split>
+          I’m a web designer in {site.region}, and roguewebdesign is my one-person studio for tradespeople who want a website that works as hard as they do.
+        </p>
+        <Placeholder block label="Euan’s story: how you got into web design, why trades, and something human about you (two or three short paragraphs)" class="about-intro__story" />
+        <p data-reveal>
+          Why “rogue”? Because most small business websites follow the same tired template. I know the rules of good design well enough to break the right ones, so your business stands out for the right reasons.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section theme-ink" aria-labelledby="principles-title">
+    <div class="container">
+      <p class="label eyebrow">(02) How I work</p>
+      <h2 id="principles-title" class="h2 principles__title" data-split>Four things you can count on</h2>
+      <ol class="principles" role="list" data-reveal-group>
+        {principles.map((p, i) => (
+          <li class="principle">
+            <span class="principle__num">{String(i + 1).padStart(2, '0')}</span>
+            <h3 class="h3">{p.title}</h3>
+            <p class="muted">{p.body}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <CtaBlock title="Let’s have a chat about your business." />
+</Base>
+
+<style>
+  .about-intro {
+    padding-top: 0;
+  }
+
+  .about-intro__grid {
+    display: grid;
+    gap: var(--space-xl);
+  }
+
+  @media (min-width: 900px) {
+    .about-intro__grid {
+      grid-template-columns: 1fr 1.3fr;
+      align-items: start;
+    }
+    .about-intro__photo {
+      position: sticky;
+      top: calc(var(--header-h) + var(--space-m));
+    }
+  }
+
+  .about-intro__photo :global(.about-intro__ph) {
+    aspect-ratio: 4 / 5;
+  }
+
+  .about-intro__text {
+    display: grid;
+    gap: var(--space-l);
+    font-size: var(--step-1);
+    line-height: 1.5;
+  }
+
+  .about-intro__big {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: var(--step-3);
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+  }
+
+  .about-intro__text :global(.about-intro__story) {
+    min-height: 14rem;
+  }
+
+  .principles__title {
+    max-width: 14ch;
+  }
+
+  .principles {
+    list-style: none;
+    padding: 0;
+    margin-top: var(--space-xl);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+    gap: var(--space-l);
+  }
+
+  .principle {
+    display: grid;
+    align-content: start;
+    gap: var(--space-s);
+    padding-top: var(--space-m);
+    border-top: 1px solid var(--line);
+  }
+
+  .principle__num {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: var(--step-5);
+    line-height: 0.8;
+    letter-spacing: -0.05em;
+    color: var(--color-signal);
+  }
+</style>

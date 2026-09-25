@@ -420,7 +420,15 @@ function reveals() {
   $$('[data-parallax]').forEach((frame) => {
     const img = frame.querySelector('img');
     if (!img) return;
-    gsap.fromTo(img, { yPercent: -7 }, { yPercent: 7, ease: 'none', scrollTrigger: { trigger: frame, start: 'top bottom', end: 'bottom top', scrub: true } });
+    // "top" frames start aligned to the top of an oversized image and drift up;
+    // plain frames drift either side of centre.
+    const fromTop = frame.dataset.parallax === 'top';
+    const travel = fromTop ? (1 - frame.clientHeight / img.clientHeight) * -100 : 7;
+    gsap.fromTo(
+      img,
+      { yPercent: fromTop ? 0 : -travel },
+      { yPercent: travel, ease: 'none', scrollTrigger: { trigger: frame, start: fromTop ? 'top 70%' : 'top bottom', end: 'bottom top', scrub: true, invalidateOnRefresh: true } },
+    );
   });
 
   // Frames are uncovered by a panel that slides away as they enter.

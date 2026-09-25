@@ -1,0 +1,48 @@
+---
+// Opening block for inner pages: index label, a huge title and an intro line.
+interface Props {
+  label: string;
+  title: string;
+  intro?: string;
+}
+const { label, title, intro } = Astro.props;
+---
+
+<section class="page-hero">
+  <div class="container">
+    <p class="label eyebrow" data-reveal>{label}</p>
+    <h1 class="page-hero__title" data-split>{title}</h1>
+    {(intro || Astro.slots.has('default')) && (
+      <div class="page-hero__foot">
+        {intro && <p class="lead" data-reveal>{intro}</p>}
+        <slot />
+      </div>
+    )}
+  </div>
+</section>
+
+<style>
+  .page-hero {
+    position: relative;
+    padding-top: calc(var(--header-h) + var(--space-2xl));
+    padding-bottom: var(--space-xl);
+  }
+
+  .page-hero__title {
+    font-size: var(--step-6);
+    line-height: 0.86;
+    letter-spacing: -0.05em;
+    max-width: 14ch;
+  }
+
+  .page-hero__foot {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: end;
+    gap: var(--space-l);
+    margin-top: var(--space-xl);
+    padding-top: var(--space-m);
+    border-top: 1px solid var(--color-rule);
+  }
+</style>

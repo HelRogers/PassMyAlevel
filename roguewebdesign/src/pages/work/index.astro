@@ -1,0 +1,56 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import WorkCard from '../../components/WorkCard.astro';
+import CtaBlock from '../../components/CtaBlock.astro';
+import { projects } from '../../data/projects';
+---
+
+<Base title="Work" description="Website designs for Kent tradespeople by roguewebdesign: roofing, heating and plumbing, electrical and landscaping sites, each built around how that trade's customers look for help.">
+  <PageHero
+    label="(01) Work"
+    title="Sites that sell the trade"
+    intro="Four concept builds for the kinds of businesses I work with. Each case study explains the thinking behind the design, not just how it looks."
+  />
+
+  <section class="section work-grid-section theme-ink" aria-label="Projects">
+    <div class="container">
+      <ul class="work-grid" role="list">
+        {projects.map((project, i) => (
+          <li class:list={['work-grid__item', { 'work-grid__item--offset': i % 2 === 1 }]} data-reveal>
+            <WorkCard project={project} index={i} loading={i < 2 ? 'eager' : 'lazy'} />
+          </li>
+        ))}
+      </ul>
+      <p class="work-grid__note muted" data-reveal>
+        Concept builds are designs made to show what a site for that trade could look like, rather than paid client work.
+      </p>
+    </div>
+  </section>
+
+  <CtaBlock title="Want one like these?" />
+</Base>
+
+<style>
+  .work-grid {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: var(--space-xl) var(--space-l);
+  }
+
+  @media (min-width: 900px) {
+    .work-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .work-grid__item--offset {
+      margin-top: var(--space-2xl);
+    }
+  }
+
+  .work-grid__note {
+    margin-top: var(--space-xl);
+    font-size: var(--step--1);
+    max-width: 50ch;
+  }
+</style>

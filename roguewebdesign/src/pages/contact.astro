@@ -1,0 +1,294 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import ContactDetails from '../components/ContactDetails.astro';
+import Arrow from '../components/Arrow.astro';
+import { site } from '../data/site';
+
+const budgets = ['£300 to £500', '£500 to £1,000', '£1,000 to £2,000', 'More than £2,000', 'Not sure yet'];
+---
+
+<Base title="Contact" description={`Get a website for your trade. Tell Euan about your business and get ideas and a clear price back. ${site.replyPromise}`}>
+  <PageHero label="(01) Contact" title="Let’s get you found." intro={`Tell me a bit about your business and what you need. ${site.replyPromise}`} />
+
+  <section class="section contact" aria-label="Contact form and details">
+    <div class="container contact__grid">
+      <div class="contact__form-wrap" data-reveal>
+        <form
+          class="contact-form"
+          name="contact"
+          method="POST"
+          action="/contact/?sent=1"
+          data-netlify="true"
+          netlify-honeypot="company-website"
+          data-astro-reload
+          data-contact-form
+          novalidate
+        >
+          <input type="hidden" name="form-name" value="contact" />
+          <p class="visually-hidden" aria-hidden="true">
+            <label>Leave this empty <input name="company-website" tabindex="-1" autocomplete="off" /></label>
+          </p>
+
+          <div class="field">
+            <label for="name">Your name</label>
+            <input id="name" name="name" type="text" autocomplete="name" required aria-describedby="name-error" />
+            <p class="field__error" id="name-error" data-error-for="name"></p>
+          </div>
+
+          <div class="field">
+            <label for="email">Email address</label>
+            <input id="email" name="email" type="email" autocomplete="email" inputmode="email" required aria-describedby="email-help email-error" />
+            <p class="field__help" id="email-help">I’ll only use this to reply to you.</p>
+            <p class="field__error" id="email-error" data-error-for="email"></p>
+          </div>
+
+          <fieldset class="field field--budget" aria-describedby="budget-error">
+            <legend>Rough budget</legend>
+            <div class="budget-options">
+              {budgets.map((b, i) => (
+                <label class="chip">
+                  <input type="radio" name="budget" value={b} required={i === 0} />
+                  <span>{b}</span>
+                </label>
+              ))}
+            </div>
+            <p class="field__error" id="budget-error" data-error-for="budget"></p>
+          </fieldset>
+
+          <div class="field">
+            <label for="details">About your business and the site you need</label>
+            <textarea id="details" name="details" rows="6" required aria-describedby="details-help details-error"></textarea>
+            <p class="field__help" id="details-help">Your trade, the areas you cover, and a link to your current site if you have one.</p>
+            <p class="field__error" id="details-error" data-error-for="details"></p>
+          </div>
+
+          <div class="contact-form__submit">
+            <div data-magnetic>
+              <button class="btn contact-form__btn" type="submit" data-submit>
+                <span data-submit-label>Send enquiry</span> <Arrow />
+              </button>
+            </div>
+            <p class="contact-form__status" role="status" aria-live="polite" data-status></p>
+          </div>
+        </form>
+
+        <div class="contact-success theme-ink" tabindex="-1" hidden data-success>
+          <p class="label eyebrow">Sent</p>
+          <p class="contact-success__title">Thanks, that’s with me.</p>
+          <p class="muted">{site.replyPromise} Keep an eye on your inbox, and check your junk folder just in case.</p>
+        </div>
+      </div>
+
+      <aside class="contact__aside" aria-label="Other ways to get in touch" data-reveal>
+        <p class="label eyebrow">Or get in touch directly</p>
+        <ContactDetails />
+        <div class="contact__promise">
+          <p class="label">What happens next</p>
+          <ol role="list">
+            <li>I read your message and have a look at your current site, if you have one.</li>
+            <li>I get back to you with a few ideas and a clear price.</li>
+            <li>If it sounds right, we book a proper chat. No pressure either way.</li>
+          </ol>
+        </div>
+      </aside>
+    </div>
+  </section>
+</Base>
+
+<script>
+  import { initContactForm } from '../scripts/contact-form';
+  document.addEventListener('astro:page-load', initContactForm);
+</script>
+
+<style>
+  .contact {
+    padding-top: 0;
+  }
+
+  .contact__grid {
+    display: grid;
+    gap: var(--space-xl);
+  }
+
+  @media (min-width: 900px) {
+    .contact__grid {
+      grid-template-columns: 1.5fr 1fr;
+      align-items: start;
+    }
+  }
+
+  .contact-form {
+    display: grid;
+    gap: var(--space-l);
+  }
+
+  .field {
+    display: grid;
+    gap: var(--space-2xs);
+    border: 0;
+    padding: 0;
+    min-width: 0;
+  }
+
+  .field label:not(.chip),
+  .field legend {
+    font-weight: 600;
+    padding: 0;
+    margin-bottom: var(--space-2xs);
+  }
+
+  .field input:not([type='radio']),
+  .field textarea {
+    width: 100%;
+    min-height: 3.5rem;
+    padding: 0.9rem 1rem;
+    background: rgb(255 255 255 / 0.55);
+    border: 1px solid var(--color-ink);
+    border-radius: 0;
+    font-size: 1rem;
+    transition: box-shadow var(--dur) var(--ease-out), background-color var(--dur);
+  }
+
+  .field textarea {
+    resize: vertical;
+    line-height: 1.5;
+  }
+
+  .field input:not([type='radio']):hover,
+  .field textarea:hover {
+    background: #fff;
+  }
+
+  .field input:not([type='radio']):focus-visible,
+  .field textarea:focus-visible {
+    outline: none;
+    background: #fff;
+    box-shadow: 6px 6px 0 var(--color-signal);
+  }
+
+  .field [aria-invalid='true'] {
+    border-color: var(--color-error);
+    border-width: 2px;
+  }
+
+  .field__help {
+    font-size: var(--step--1);
+    color: var(--color-graphite);
+  }
+
+  .field__error {
+    font-size: var(--step--1);
+    font-weight: 600;
+    color: var(--color-error);
+  }
+
+  .field__error:empty {
+    display: none;
+  }
+
+  .field__error::before {
+    content: '! ';
+  }
+
+  .budget-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2xs);
+  }
+
+  .chip {
+    position: relative;
+    cursor: pointer;
+  }
+
+  .chip input {
+    position: absolute;
+    opacity: 0;
+    inset: 0;
+    cursor: pointer;
+  }
+
+  .chip span {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    padding: 0 1rem;
+    border: 1px solid var(--color-ink);
+    transition: background-color var(--dur) var(--ease-out), color var(--dur);
+  }
+
+  .chip:hover span {
+    background: var(--color-paper-dim);
+  }
+
+  .chip input:checked + span {
+    background: var(--color-ink);
+    color: var(--color-paper);
+  }
+
+  .chip input:focus-visible + span {
+    outline: 3px solid var(--color-signal);
+    outline-offset: 3px;
+  }
+
+  .contact-form__submit {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-m);
+  }
+
+  .contact-form__btn {
+    min-height: 4rem;
+    padding-inline: 2rem;
+  }
+
+  .contact-form__btn[aria-busy='true'] {
+    opacity: 0.7;
+    cursor: progress;
+  }
+
+  .contact-form__status {
+    font-weight: 600;
+  }
+
+  .contact-form__status.is-error {
+    color: var(--color-error);
+  }
+
+  .contact-success {
+    padding: var(--space-xl) var(--space-l);
+    outline: none;
+  }
+
+  .contact-success__title {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: var(--step-4);
+    letter-spacing: -0.04em;
+    line-height: 0.95;
+    margin-bottom: var(--space-m);
+  }
+
+  .contact__aside {
+    display: grid;
+    gap: var(--space-l);
+    padding: var(--space-l) var(--space-m);
+    border: 1px solid var(--color-ink);
+    background: var(--color-paper);
+  }
+
+  .contact__promise {
+    display: grid;
+    gap: var(--space-xs);
+    padding-top: var(--space-m);
+    border-top: 1px solid var(--color-rule);
+  }
+
+  .contact__promise ol {
+    padding-left: 1.2rem;
+    display: grid;
+    gap: var(--space-2xs);
+  }
+</style>

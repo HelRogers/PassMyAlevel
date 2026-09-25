@@ -1,0 +1,156 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Process from '../components/Process.astro';
+import Faq from '../components/Faq.astro';
+import CtaBlock from '../components/CtaBlock.astro';
+import Arrow from '../components/Arrow.astro';
+import { services, included } from '../data/services';
+import { site } from '../data/site';
+---
+
+<Base title="Services and prices" description={`Websites for Kent tradespeople from £${site.priceFrom}. New sites, redesigns, and hosting and care, with clear prices and a simple four-step process.`}>
+  <PageHero
+    label="(01) Services"
+    title="Websites for the trades, from £300"
+    intro="Everything you need to look like the proper business you are, and nothing you don’t. Prices are agreed before any work starts."
+  >
+    <div data-magnetic data-reveal><a class="btn" href="/contact/">Get a price <Arrow /></a></div>
+  </PageHero>
+
+  <section class="section theme-ink" aria-labelledby="services-list-title">
+    <div class="container">
+      <h2 id="services-list-title" class="visually-hidden">Services</h2>
+      <ol class="service-cards" role="list" data-reveal-group>
+        {services.map((s) => (
+          <li class="service-card">
+            <div class="service-card__top">
+              <span class="label">{s.number}</span>
+              <span class="service-card__price">{s.price}</span>
+            </div>
+            <h3 class="service-card__title">{s.title}</h3>
+            <p class="service-card__body">{s.body}</p>
+            <ul class="service-card__points" role="list">
+              {s.points.map((pt) => <li>{pt}</li>)}
+            </ul>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="included-title">
+    <div class="container">
+      <p class="label eyebrow">(02) Included as standard</p>
+      <h2 id="included-title" class="h2 included__title" data-split>Every site gets the basics right</h2>
+      <ul class="included" role="list" data-reveal-group>
+        {included.map((item, i) => (
+          <li class="included__item">
+            <span class="label">{String(i + 1).padStart(2, '0')}</span>
+            <h3 class="h3">{item.title}</h3>
+            <p class="muted">{item.body}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <Process label="(03) How it works" />
+
+  <Faq />
+
+  <CtaBlock title="Ready when you are." />
+</Base>
+
+<style>
+  .service-cards {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
+    border-top: 1px solid var(--line);
+    border-left: 1px solid var(--line);
+  }
+
+  .service-card {
+    display: grid;
+    align-content: start;
+    gap: var(--space-m);
+    padding: var(--space-l) var(--space-m);
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    transition: background-color var(--dur-slow) var(--ease-out);
+  }
+
+  .service-card:hover {
+    background: var(--color-ink-soft);
+  }
+
+  .service-card__top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .service-card__price {
+    padding: 0.35rem 0.7rem;
+    background: var(--color-signal);
+    color: var(--color-ink);
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    text-transform: uppercase;
+  }
+
+  .service-card__title {
+    font-size: var(--step-3);
+    letter-spacing: -0.035em;
+    line-height: 1;
+  }
+
+  .service-card__body {
+    color: var(--fg-muted);
+  }
+
+  .service-card__points {
+    list-style: none;
+    padding: 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .service-card__points li {
+    display: flex;
+    gap: var(--space-xs);
+    padding-block: var(--space-xs);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .service-card__points li::before {
+    content: '';
+    flex: none;
+    width: 0.5rem;
+    height: 0.5rem;
+    margin-top: 0.6em;
+    background: var(--color-signal);
+  }
+
+  .included__title {
+    max-width: 16ch;
+  }
+
+  .included {
+    list-style: none;
+    padding: 0;
+    margin-top: var(--space-xl);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+    gap: var(--space-l);
+  }
+
+  .included__item {
+    display: grid;
+    align-content: start;
+    gap: var(--space-xs);
+    padding-top: var(--space-s);
+    border-top: 2px solid var(--color-ink);
+  }
+</style>

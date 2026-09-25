@@ -1,0 +1,420 @@
+@import './tokens.css';
+
+/* ---------- Reset ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-padding-top: calc(var(--header-h) + 1rem);
+}
+
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+body {
+  min-height: 100svh;
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  font-size: var(--step-0);
+  line-height: 1.6;
+  font-feature-settings: 'ss01';
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+}
+
+img,
+svg,
+video,
+picture {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+  background: none;
+  border: 0;
+  padding: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  line-height: 0.95;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+  font-variation-settings: 'wdth' 100;
+}
+
+p {
+  text-wrap: pretty;
+  max-width: 62ch;
+}
+
+::selection {
+  background: var(--color-signal);
+  color: var(--color-ink);
+}
+
+/* ---------- Focus ---------- */
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+}
+
+.theme-signal :focus-visible {
+  outline-color: var(--color-ink);
+}
+
+/* ---------- Utilities ---------- */
+.visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: fixed;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 1000;
+  padding: 0.75rem 1rem;
+  background: var(--color-ink);
+  color: var(--color-paper);
+  font-weight: 600;
+  transform: translateY(-200%);
+  transition: transform var(--dur) var(--ease-out);
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+.container {
+  width: 100%;
+  max-width: var(--max);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.section {
+  position: relative;
+  padding-block: var(--space-2xl);
+  background: var(--bg);
+  color: var(--fg);
+}
+
+.theme-ink,
+.theme-signal {
+  background: var(--bg);
+  color: var(--fg);
+}
+
+.label {
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+
+.label--fg {
+  color: var(--fg);
+}
+
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  margin-bottom: var(--space-m);
+}
+
+.eyebrow::before {
+  content: '';
+  width: 0.6rem;
+  height: 0.6rem;
+  background: var(--color-signal);
+  flex: none;
+}
+
+.theme-signal .eyebrow::before {
+  background: var(--color-ink);
+}
+
+.display {
+  font-size: var(--step-5);
+}
+
+.h2 {
+  font-size: var(--step-4);
+}
+
+.h3 {
+  font-size: var(--step-2);
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+}
+
+.lead {
+  font-size: var(--step-1);
+  line-height: 1.45;
+  max-width: 44ch;
+}
+
+.muted {
+  color: var(--fg-muted);
+}
+
+.rule {
+  border: 0;
+  border-top: var(--border);
+}
+
+/* ---------- Links with a drawn underline ---------- */
+.link {
+  position: relative;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -0.1em;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform var(--dur) var(--ease-out);
+}
+
+.link:hover::after,
+.link[aria-current='page']::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+.link--always::after {
+  transform: scaleX(1);
+}
+
+.link--always:hover::after {
+  animation: underline-redraw 0.6s var(--ease-out);
+}
+
+@keyframes underline-redraw {
+  0% { transform: scaleX(1); transform-origin: right; }
+  45% { transform: scaleX(0); transform-origin: right; }
+  46% { transform: scaleX(0); transform-origin: left; }
+  100% { transform: scaleX(1); transform-origin: left; }
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+  --btn-bg: var(--color-signal);
+  --btn-fg: var(--color-ink);
+  --btn-fill: var(--color-ink);
+  --btn-fill-fg: var(--color-paper);
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  min-height: 3.5rem;
+  padding: 0 1.6rem;
+  background: var(--btn-bg);
+  color: var(--btn-fg);
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: var(--step-0);
+  line-height: 1;
+  text-decoration: none;
+  border: 1px solid var(--btn-bg);
+  overflow: hidden;
+  isolation: isolate;
+  cursor: pointer;
+  transition: color var(--dur) var(--ease-out), border-color var(--dur) var(--ease-out);
+}
+
+.btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--btn-fill);
+  transform: translateY(101%);
+  transition: transform 0.5s var(--ease-out);
+}
+
+.btn:hover {
+  color: var(--btn-fill-fg);
+  border-color: var(--btn-fill);
+}
+
+.btn:hover::before {
+  transform: translateY(0);
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.btn__arrow {
+  width: 1.1em;
+  height: 1.1em;
+  flex: none;
+  transition: transform var(--dur) var(--ease-out);
+}
+
+.btn:hover .btn__arrow {
+  transform: translateX(0.25em);
+}
+
+.btn--ghost {
+  --btn-bg: transparent;
+  --btn-fg: var(--fg);
+  --btn-fill: var(--fg);
+  --btn-fill-fg: var(--bg);
+  border-color: currentColor;
+}
+
+.btn--ink {
+  --btn-bg: var(--color-ink);
+  --btn-fg: var(--color-paper);
+  --btn-fill: var(--color-paper);
+  --btn-fill-fg: var(--color-ink);
+}
+
+.theme-ink .btn:not(.btn--ghost) {
+  --btn-fill: var(--color-paper);
+  --btn-fill-fg: var(--color-ink);
+}
+
+.btn-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+}
+
+/* Magnetic wrapper keeps the hit area still while the button moves */
+[data-magnetic] {
+  display: inline-block;
+}
+
+/* ---------- Placeholder content (to be replaced by Euan) ---------- */
+.placeholder {
+  display: inline-block;
+  padding: 0.1em 0.45em;
+  border: 1px dashed currentColor;
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  color: var(--fg-muted);
+}
+
+.placeholder-block {
+  display: grid;
+  place-items: center;
+  padding: var(--space-l);
+  border: 1px dashed var(--fg-muted);
+  color: var(--fg-muted);
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  text-align: center;
+  text-transform: uppercase;
+  background: repeating-linear-gradient(-45deg, transparent 0 12px, rgb(92 90 85 / 0.06) 12px 13px);
+}
+
+/* ---------- Motion setup ---------- */
+/* Elements start hidden only when JS has confirmed motion is allowed.
+   motion.ts removes .motion-pending if anything fails. */
+.motion-ok [data-reveal],
+.motion-ok [data-reveal-group] > * {
+  opacity: 0;
+}
+
+.motion-failed [data-reveal],
+.motion-failed [data-reveal-group] > * {
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.motion-ok [data-split] {
+  visibility: hidden;
+}
+
+.motion-failed [data-split] {
+  visibility: visible !important;
+}
+
+.split-line {
+  padding-bottom: 0.06em;
+  margin-bottom: -0.06em;
+}
+
+[data-unveil] {
+  position: relative;
+  overflow: hidden;
+}
+
+.unveil-cover {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: var(--color-signal);
+  transform-origin: top;
+  pointer-events: none;
+}

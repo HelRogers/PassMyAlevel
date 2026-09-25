@@ -1,0 +1,16 @@
+---
+// Marks content Euan still needs to supply. Search the codebase for
+// "Placeholder" to find every one before launch.
+interface Props {
+  label: string;
+  block?: boolean;
+  class?: string;
+}
+const { label, block = false, class: className } = Astro.props;
+---
+
+{block ? (
+  <div class:list={['placeholder-block', className]}>To add: {label}</div>
+) : (
+  <span class:list={['placeholder', className]}>To add: {label}</span>
+)}

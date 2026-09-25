@@ -1,0 +1,59 @@
+---
+// A slowly rotating circular badge. The text is decorative; the link has its own label.
+interface Props {
+  text?: string;
+  href?: string;
+  label?: string;
+}
+const { text = 'Sites from £300 · Built in Kent · For the trades · ', href = '#work', label = 'Skip to the work' } = Astro.props;
+---
+
+<a class="seal" href={href} aria-label={label} data-cursor-text="Scroll">
+  <svg class="seal__ring" viewBox="0 0 200 200" aria-hidden="true" data-seal>
+    <defs><path id="seal-circle" d="M100,100 m-78,0 a78,78 0 1,1 156,0 a78,78 0 1,1 -156,0" /></defs>
+    <text><textPath href="#seal-circle" textLength="488">{text.toUpperCase()}</textPath></text>
+  </svg>
+  <svg class="seal__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true">
+    <path d="M12 4v15M6 13l6 6 6-6" />
+  </svg>
+</a>
+
+<style>
+  .seal {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: clamp(6.5rem, 5rem + 5vw, 9rem);
+    aspect-ratio: 1;
+    color: var(--color-ink);
+    border-radius: 50%;
+  }
+
+  .seal__ring {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .seal__ring text {
+    font-family: var(--font-mono);
+    font-size: 15px;
+    fill: currentColor;
+    letter-spacing: 0.05em;
+  }
+
+  .seal__arrow {
+    width: 32%;
+    height: 32%;
+    padding: 0.5rem;
+    background: var(--color-signal);
+    border-radius: 50%;
+    box-sizing: content-box;
+    transition: transform var(--dur) var(--ease-out);
+  }
+
+  .seal:hover .seal__arrow {
+    transform: translateY(4px);
+  }
+</style>

@@ -1,0 +1,41 @@
+---
+import Placeholder from './Placeholder.astro';
+import { site } from '../data/site';
+---
+
+<ul class="contact-details" role="list">
+  <li>
+    <span class="label">Email</span>
+    {site.email ? <a class="link link--always" href={`mailto:${site.email}`}>{site.email}</a> : <Placeholder label="email address" />}
+  </li>
+  <li>
+    <span class="label">Phone</span>
+    {site.phone ? <a class="link link--always" href={`tel:${site.phone.replace(/\s/g, '')}`}>{site.phone}</a> : <Placeholder label="phone number" />}
+  </li>
+  <li>
+    <span class="label">Social</span>
+    {site.socials.length ? (
+      <span class="contact-details__socials">
+        {site.socials.map((s) => <a class="link link--always" href={s.href} rel="me noopener" target="_blank">{s.label}<span class="visually-hidden"> (opens in a new tab)</span></a>)}
+      </span>
+    ) : <Placeholder label="Instagram, Facebook or LinkedIn" />}
+  </li>
+</ul>
+
+<style>
+  .contact-details {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: var(--space-s);
+  }
+  .contact-details li {
+    display: grid;
+    gap: 0.2rem;
+  }
+  .contact-details__socials {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-s);
+  }
+</style>

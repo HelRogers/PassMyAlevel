@@ -1,0 +1,294 @@
+---
+import { ClientRouter } from 'astro:transitions';
+import '@fontsource-variable/archivo/wdth.css';
+import '@fontsource-variable/space-grotesk';
+import '@fontsource/jetbrains-mono/400.css';
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Logo from '../components/Logo.astro';
+import { site } from '../data/site';
+
+interface Props {
+  title?: string;
+  description?: string;
+  /** Absolute or root-relative path to a 1200 x 630 social image. */
+  image?: string;
+  noindex?: boolean;
+}
+
+const { title, description = site.description, image = '/og.png', noindex = false } = Astro.props;
+const fullTitle = title ? `${title} | ${site.name}` : `${site.name} | ${site.tagline}, from £${site.priceFrom}`;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogImage = new URL(image, Astro.site);
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfessionalService',
+  name: site.name,
+  url: Astro.site?.href,
+  description: site.description,
+  founder: { '@type': 'Person', name: site.owner },
+  areaServed: { '@type': 'AdministrativeArea', name: 'Kent, England' },
+  address: { '@type': 'PostalAddress', addressRegion: 'Kent', addressCountry: 'GB' },
+  priceRange: `From £${site.priceFrom}`,
+  image: ogImage.href,
+  logo: new URL('/favicon.svg', Astro.site).href,
+  ...(site.email ? { email: site.email } : {}),
+  ...(site.phone ? { telephone: site.phone } : {}),
+  ...(site.socials.length ? { sameAs: site.socials.map((s) => s.href) } : {}),
+};
+---
+
+<!doctype html>
+<html lang="en-GB" transition:animate="none">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex" />}
+    <meta name="theme-color" content="#0e0e0c" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:locale" content="en_GB" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+    <!-- Decide on motion before first paint so nothing flashes. -->
+    <script is:inline>
+      (() => {
+        const d = document.documentElement;
+        if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        d.classList.add('motion-ok');
+        try {
+          if (!sessionStorage.getItem('rwd-intro')) d.classList.add('intro-play');
+        } catch (e) {}
+        // Safety net: if the animation script never starts, show everything.
+        setTimeout(() => {
+          if (!d.classList.contains('motion-ready')) {
+            d.classList.add('motion-failed');
+            d.classList.remove('intro-play');
+          }
+        }, 4000);
+      })();
+    </script>
+
+    <ClientRouter />
+  </head>
+  <body id="top">
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <div class="grid-lines" aria-hidden="true" transition:persist="grid-lines">
+      <div class="container grid-lines__inner">
+        <span></span><span></span><span></span><span></span><span></span>
+      </div>
+    </div>
+
+    <Header />
+
+    <main id="main" tabindex="-1">
+      <slot />
+    </main>
+
+    <Footer />
+
+    <div class="wipe" aria-hidden="true" data-wipe transition:persist="wipe">
+      <div class="wipe__logo"><Logo /></div>
+    </div>
+
+    <div class="cursor" aria-hidden="true" data-cursor transition:persist="cursor">
+      <div class="cursor__ring" data-cursor-ring><span class="cursor__label" data-cursor-label></span></div>
+      <div class="cursor__dot" data-cursor-dot></div>
+    </div>
+
+    <div class="intro" aria-hidden="true" data-intro transition:persist="intro">
+      <div class="container intro__lines">
+        <span></span><span></span><span></span><span></span><span></span>
+      </div>
+      <div class="intro__center">
+        <span class="intro__count label" data-intro-count>000</span>
+      </div>
+      <button class="intro__skip label" type="button" data-intro-skip tabindex="-1">Skip intro</button>
+    </div>
+
+    <script>
+      import '../scripts/motion';
+    </script>
+  </body>
+</html>
+
+<style>
+  main {
+    position: relative;
+    z-index: 1;
+    outline: none;
+  }
+
+  /* The visible layout grid. Sits behind content; ink and signal sections cover it. */
+  .grid-lines {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .grid-lines__inner {
+    position: relative;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .grid-lines span {
+    width: 1px;
+    height: 100%;
+    background: var(--color-rule);
+    transform-origin: top;
+  }
+
+  .grid-lines span:nth-child(2),
+  .grid-lines span:nth-child(4) {
+    opacity: 0.55;
+  }
+
+  @media (max-width: 700px) {
+    .grid-lines span:nth-child(2),
+    .grid-lines span:nth-child(4) {
+      display: none;
+    }
+  }
+
+  /* Page transition panel */
+  .wipe {
+    position: fixed;
+    inset: 0;
+    z-index: 90;
+    display: grid;
+    place-items: center;
+    background: var(--color-signal);
+    color: var(--color-ink);
+    transform: translateY(100%);
+    pointer-events: none;
+    visibility: hidden;
+  }
+
+  .wipe__logo {
+    width: min(60vw, 28rem);
+  }
+
+  .wipe__logo :global(path[fill='#FF4D1F']) {
+    fill: var(--color-ink);
+  }
+
+  /* Custom cursor: desktop with a fine pointer only, and never instead of the real one */
+  .cursor {
+    display: none;
+  }
+
+  :global(.has-cursor) .cursor {
+    display: block;
+    position: fixed;
+    inset: 0 auto auto 0;
+    z-index: 100;
+    pointer-events: none;
+  }
+
+  .cursor__dot,
+  .cursor__ring {
+    position: fixed;
+    top: 0;
+    left: 0;
+    border-radius: 50%;
+    will-change: transform;
+  }
+
+  .cursor__dot {
+    width: 6px;
+    height: 6px;
+    margin: -3px 0 0 -3px;
+    background: var(--color-signal);
+  }
+
+  .cursor__ring {
+    width: 36px;
+    height: 36px;
+    margin: -18px 0 0 -18px;
+    border: 1px solid var(--color-ink);
+    display: grid;
+    place-items: center;
+    opacity: 0.6;
+  }
+
+  .cursor__label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--color-ink);
+    opacity: 0;
+    white-space: nowrap;
+  }
+
+  /* First-visit intro */
+  .intro {
+    display: none;
+  }
+
+  :global(.intro-play) .intro {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 95;
+    background: var(--color-ink);
+    color: var(--color-paper);
+  }
+
+  .intro__lines {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .intro__lines span {
+    width: 1px;
+    height: 100%;
+    background: var(--color-rule-dark);
+    transform: scaleY(0);
+    transform-origin: top;
+  }
+
+  .intro__center {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+  }
+
+  .intro__count {
+    color: var(--color-paper);
+    font-size: var(--step-1);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .intro__skip {
+    position: absolute;
+    right: var(--gutter);
+    bottom: var(--gutter);
+    padding: 0.75rem 0;
+    color: var(--color-ash);
+    min-height: 44px;
+  }
+</style>

@@ -1,0 +1,70 @@
+---
+// The giant hero wordmark. Each letter has three wrappers so different
+// animations never fight over the same transform:
+//   .hl     scatters as the hero scrolls away
+//   .hl__m  is pushed by the cursor
+//   .hl__i  runs the entry animation
+//   .hl__t  carries the rogue tilt, and is never animated
+const words = ['rogue', 'web', 'design'];
+---
+
+<div class="wordmark" data-wordmark aria-hidden="true">
+  {words.map((word, w) => (
+    <span class="wordmark__word">
+      {[...word].map((ch, i) => (
+        <span class:list={['hl', { 'hl--rogue': w === 0 && i === 0 }]}>
+          <span class="hl__m"><span class="hl__i"><span class="hl__t">{ch}</span></span></span>
+        </span>
+      ))}
+    </span>
+  ))}
+</div>
+
+<style>
+  .wordmark {
+    --w: min(100vw, var(--max)) - 2 * var(--gutter);
+    display: flex;
+    flex-wrap: wrap;
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: calc((var(--w)) / 8.05);
+    line-height: 0.8;
+    letter-spacing: -0.035em;
+    white-space: nowrap;
+    user-select: none;
+    color: var(--color-ink);
+  }
+
+  .wordmark__word {
+    display: inline-flex;
+  }
+
+  .hl,
+  .hl__m,
+  .hl__i,
+  .hl__t {
+    display: inline-block;
+  }
+
+  .hl--rogue .hl__t {
+    color: var(--color-signal);
+    transform: translateY(0.07em) rotate(-14deg);
+    transform-origin: 50% 90%;
+  }
+
+  :global(.motion-ok) .hl__i {
+    opacity: 0;
+  }
+
+  :global(.motion-failed) .hl__i {
+    opacity: 1 !important;
+  }
+
+  @media (max-width: 700px) {
+    .wordmark {
+      flex-direction: column;
+      font-size: calc((var(--w)) / 3.3);
+      line-height: 0.82;
+    }
+  }
+</style>

@@ -1,0 +1,196 @@
+---
+import Logo from './Logo.astro';
+import Arrow from './Arrow.astro';
+import { nav } from '../data/site';
+
+const path = Astro.url.pathname;
+const isCurrent = (href: string) => path === href || (href !== '/' && path.startsWith(href));
+---
+
+<header class="site-header" data-header>
+  <div class="container site-header__inner">
+    <a href="/" class="site-header__logo" aria-label="roguewebdesign, home" aria-current={path === '/' ? 'page' : undefined}>
+      <Logo />
+    </a>
+
+    <nav class="site-nav" aria-label="Main">
+      <ul role="list">
+        {nav.map((item) => (
+          <li>
+            <a class="link" href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>{item.label}</a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <div class="site-header__cta" data-magnetic>
+      <a href="/contact/" class="btn btn--ink btn--small">Start a project <Arrow /></a>
+    </div>
+
+    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" data-menu-toggle>
+      <span class="visually-hidden" data-menu-label>Open menu</span>
+      <span class="menu-toggle__bars" aria-hidden="true"><span></span><span></span></span>
+    </button>
+  </div>
+</header>
+
+<div class="mobile-menu theme-ink" id="mobile-menu" data-menu hidden>
+  <nav class="container mobile-menu__inner" aria-label="Main">
+    <ul role="list">
+      <li><a href="/" aria-current={path === '/' ? 'page' : undefined}><span class="label">00</span> Home</a></li>
+      {nav.map((item, i) => (
+        <li>
+          <a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>
+            <span class="label">{String(i + 1).padStart(2, '0')}</span> {item.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+    <p class="mobile-menu__foot label">Websites for Kent tradespeople. From £300.</p>
+  </nav>
+</div>
+
+<style>
+  .site-header {
+    position: fixed;
+    inset: 0 0 auto;
+    z-index: 50;
+    height: var(--header-h);
+    background: rgb(242 239 232 / 0.88);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--color-rule);
+    transition: transform 0.5s var(--ease-out);
+  }
+
+  :global(.header-hidden) .site-header:not(:focus-within) {
+    transform: translateY(-100%);
+  }
+
+  :global(.menu-open) .site-header {
+    transform: none;
+    background: var(--color-ink);
+    border-color: var(--color-rule-dark);
+    color: var(--color-paper);
+  }
+
+  .site-header__inner {
+    display: flex;
+    align-items: center;
+    gap: var(--space-l);
+    height: 100%;
+  }
+
+  .site-header__logo {
+    width: clamp(9.5rem, 8rem + 5vw, 12rem);
+    color: inherit;
+    flex: none;
+  }
+
+  .site-nav {
+    margin-left: auto;
+  }
+
+  .site-nav ul {
+    display: flex;
+    gap: var(--space-l);
+    padding: 0;
+    list-style: none;
+  }
+
+  .site-nav a {
+    font-weight: 500;
+    text-decoration: none;
+    padding-block: 0.75rem;
+  }
+
+  .site-nav a::after {
+    bottom: 0.55rem;
+  }
+
+  :global(.btn--small) {
+    min-height: 2.75rem;
+    padding-inline: 1.1rem;
+    font-size: var(--step--1);
+  }
+
+  .menu-toggle {
+    display: none;
+    margin-left: auto;
+    width: 3rem;
+    height: 3rem;
+    place-items: center;
+    color: inherit;
+  }
+
+  .menu-toggle__bars {
+    display: grid;
+    gap: 7px;
+    width: 26px;
+  }
+
+  .menu-toggle__bars span {
+    display: block;
+    height: 2px;
+    background: currentColor;
+    transition: transform var(--dur) var(--ease-out);
+  }
+
+  .menu-toggle[aria-expanded='true'] .menu-toggle__bars span:first-child {
+    transform: translateY(4.5px) rotate(45deg);
+  }
+
+  .menu-toggle[aria-expanded='true'] .menu-toggle__bars span:last-child {
+    transform: translateY(-4.5px) rotate(-45deg);
+  }
+
+  .mobile-menu {
+    position: fixed;
+    inset: 0;
+    z-index: 40;
+    padding-top: calc(var(--header-h) + var(--space-l));
+    overflow-y: auto;
+  }
+
+  .mobile-menu ul {
+    list-style: none;
+    padding: 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .mobile-menu li {
+    border-bottom: 1px solid var(--line);
+    overflow: hidden;
+  }
+
+  .mobile-menu li a {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-s);
+    padding-block: var(--space-s);
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(2.4rem, 11vw, 4rem);
+    letter-spacing: -0.04em;
+    line-height: 1;
+    text-decoration: none;
+  }
+
+  .mobile-menu li a[aria-current='page'] {
+    color: var(--color-signal);
+  }
+
+  .mobile-menu__foot {
+    margin-top: var(--space-l);
+  }
+
+  @media (max-width: 860px) {
+    .site-nav,
+    .site-header__cta {
+      display: none;
+    }
+    .menu-toggle {
+      display: grid;
+    }
+  }
+</style>

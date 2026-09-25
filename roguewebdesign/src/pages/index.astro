@@ -1,0 +1,583 @@
+---
+import Base from '../layouts/Base.astro';
+import Wordmark from '../components/Wordmark.astro';
+import Seal from '../components/Seal.astro';
+import Marquee from '../components/Marquee.astro';
+import WorkCard from '../components/WorkCard.astro';
+import CtaBlock from '../components/CtaBlock.astro';
+import Arrow from '../components/Arrow.astro';
+import Placeholder from '../components/Placeholder.astro';
+import { projects } from '../data/projects';
+import { services, process } from '../data/services';
+import { site } from '../data/site';
+---
+
+<Base>
+  <!-- Hero -->
+  <section class="hero" data-hero>
+    <div class="container hero__inner">
+      <div class="hero__top label" data-hero-fade>
+        <span>(01) Freelance web design</span>
+        <span>{site.region}, UK</span>
+        <span class="hero__top-price">Sites from £{site.priceFrom}</span>
+      </div>
+
+      <h1 class="visually-hidden">roguewebdesign: websites for Kent tradespeople, from £{site.priceFrom}</h1>
+      <Wordmark />
+
+      <div class="hero__bottom">
+        <p class="hero__lead" data-hero-fade>
+          Websites that win work for Kent’s roofers, plumbers, sparkies and landscapers. Designed and built by {site.owner}.
+        </p>
+        <div class="btn-row hero__actions" data-hero-fade>
+          <div data-magnetic><a class="btn" href="/contact/">Start your site <Arrow /></a></div>
+          <div data-magnetic><a class="btn btn--ghost" href="/work/">See the work</a></div>
+        </div>
+        <div class="hero__seal" data-hero-fade>
+          <Seal />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <Marquee />
+
+  <!-- Intro statement -->
+  <section class="section statement">
+    <div class="container">
+      <p class="label eyebrow">(02) The short version</p>
+      <h2 class="statement__title" data-split>
+        You’re good at your trade. Your website should make that obvious before anyone picks up the phone.
+      </h2>
+      <div class="statement__cols">
+        <p data-reveal>
+          A lot of trade websites are missing, out of date, or built from the same template as the firm down the road. Customers notice, and they ring someone else.
+        </p>
+        <p data-reveal>
+          I design sites that look like a proper business, load fast on a phone and make calling you the easiest thing on the page. Plain English, clear prices, and sites from £{site.priceFrom}.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services overview -->
+  <section class="section services-overview" aria-labelledby="services-title">
+    <div class="container">
+      <div class="section-head">
+        <p class="label eyebrow">(03) What I do</p>
+        <h2 id="services-title" class="h2" data-split>Three ways I can help</h2>
+      </div>
+      <ol class="service-rows" role="list" data-reveal-group>
+        {services.map((s) => (
+          <li>
+            <a class="service-row" href="/services/">
+              <span class="label service-row__num">{s.number}</span>
+              <span class="service-row__title">{s.title}</span>
+              <span class="service-row__price label label--fg">{s.price}</span>
+              <span class="service-row__arrow" aria-hidden="true"><Arrow class="" /></span>
+            </a>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- Selected work: pinned horizontal scroll on wide screens -->
+  <section class="work-showcase theme-ink" id="work" aria-labelledby="work-title" data-hscroll>
+    <div class="work-showcase__viewport">
+      <div class="work-showcase__track" data-hscroll-track>
+        <div class="work-showcase__intro">
+          <p class="label eyebrow">(04) Selected work</p>
+          <h2 id="work-title" class="work-showcase__title">Built for the trades</h2>
+          <p class="muted work-showcase__note">
+            Four concept builds for the kinds of businesses I work with. Each one starts from how that trade’s customers actually look for help.
+          </p>
+          <a class="link link--always work-showcase__all" href="/work/">All work and case studies</a>
+        </div>
+        {projects.map((project, i) => (
+          <div class="work-showcase__item">
+            <WorkCard project={project} index={i} />
+          </div>
+        ))}
+        <div class="work-showcase__item work-showcase__next">
+          <a href="/contact/" class="next-card" data-cursor-text="Let’s go">
+            <span class="label">05</span>
+            <span class="next-card__title">Your business could be next.</span>
+            <span class="btn">Start your site <Arrow /></span>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="work-showcase__progress" aria-hidden="true"><span data-hscroll-progress></span></div>
+  </section>
+
+  <!-- Process -->
+  <section class="section process-section" aria-labelledby="process-title">
+    <div class="container process-section__grid">
+      <div class="process-section__head">
+        <p class="label eyebrow">(05) How it works</p>
+        <h2 id="process-title" class="h2" data-split>From first chat to phone ringing</h2>
+        <p class="muted process-section__intro" data-reveal>Four steps, no jargon. You always know what is happening and what it costs.</p>
+      </div>
+      <div class="process-list" data-process>
+        <span class="process-list__line" aria-hidden="true" data-process-line></span>
+        <ol class="process-list__steps" role="list">
+        {process.map((step) => (
+          <li class="process-step" data-process-step>
+            <span class="process-step__num label">{step.number}</span>
+            <h3 class="process-step__title">{step.title}</h3>
+            <p class="muted">{step.body}</p>
+          </li>
+        ))}
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- About teaser -->
+  <section class="section about-teaser" aria-labelledby="about-title">
+    <div class="container about-teaser__grid">
+      <div class="about-teaser__photo" data-reveal>
+        <Placeholder block label="photo of Euan (portrait, at least 1200px tall)" class="about-teaser__ph" />
+      </div>
+      <div class="about-teaser__text">
+        <p class="label eyebrow">(06) Who you’ll deal with</p>
+        <h2 id="about-title" class="h2" data-split>Hi, I’m Euan.</h2>
+        <p class="lead" data-reveal>
+          roguewebdesign is just me, which means the person you talk to is the person who designs and builds your site. No account managers, no passing you around.
+        </p>
+        <p data-reveal>
+          I’m based in {site.region} and I focus on websites for trades, because good tradespeople deserve better than a page that makes them look like a cowboy.
+        </p>
+        <a class="btn btn--ghost" href="/about/" data-reveal>More about me <Arrow /></a>
+      </div>
+    </div>
+  </section>
+
+  <CtaBlock />
+</Base>
+
+<style>
+  /* Hero */
+  .hero {
+    position: relative;
+    min-height: 100svh;
+    padding-top: calc(var(--header-h) + var(--space-l));
+    padding-bottom: var(--space-l);
+    display: flex;
+  }
+
+  .hero__inner {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    gap: var(--space-l);
+  }
+
+  .hero__top {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--space-xs) var(--space-l);
+    padding-bottom: var(--space-s);
+    border-bottom: 1px solid var(--color-rule);
+  }
+
+  .hero__top-price {
+    color: var(--color-ink);
+  }
+
+  .hero :global(.wordmark) {
+    align-self: center;
+    margin-left: -0.02em;
+  }
+
+  .hero__bottom {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    align-items: end;
+    gap: var(--space-l);
+    padding-top: var(--space-m);
+    border-top: 1px solid var(--color-rule);
+  }
+
+  .hero__lead {
+    font-size: var(--step-1);
+    line-height: 1.4;
+    max-width: 34ch;
+  }
+
+  @media (max-width: 1000px) {
+    .hero__bottom {
+      grid-template-columns: 1fr auto;
+    }
+    .hero__lead {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .hero__bottom {
+      grid-template-columns: 1fr;
+    }
+    .hero__seal {
+      display: none;
+    }
+    .hero__actions :global(.btn) {
+      width: 100%;
+    }
+    .hero__actions > div {
+      flex: 1 1 100%;
+    }
+  }
+
+  /* Statement */
+  .statement__title {
+    font-size: var(--step-4);
+    max-width: 20ch;
+    letter-spacing: -0.04em;
+  }
+
+  .statement__cols {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+    gap: var(--space-l);
+    margin-top: var(--space-xl);
+    margin-left: auto;
+    max-width: 58rem;
+    font-size: var(--step-1);
+    line-height: 1.5;
+  }
+
+  /* Services rows */
+  .section-head {
+    margin-bottom: var(--space-l);
+  }
+
+  .service-rows {
+    list-style: none;
+    padding: 0;
+    border-top: 1px solid var(--color-ink);
+  }
+
+  .service-rows li {
+    border-bottom: 1px solid var(--color-ink);
+  }
+
+  .service-row {
+    position: relative;
+    display: grid;
+    grid-template-columns: 3rem 1fr auto auto;
+    align-items: center;
+    gap: var(--space-m);
+    padding: var(--space-m) var(--space-2xs);
+    text-decoration: none;
+    isolation: isolate;
+    transition: color var(--dur) var(--ease-out);
+  }
+
+  .service-row::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--color-ink);
+    transform: scaleY(0);
+    transform-origin: bottom;
+    transition: transform 0.55s var(--ease-out);
+  }
+
+  .service-row:hover {
+    color: var(--color-paper);
+  }
+
+  .service-row:hover::before {
+    transform: scaleY(1);
+  }
+
+  .service-row:hover .label {
+    color: var(--color-ash);
+  }
+
+  .service-row__title {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: var(--step-3);
+    letter-spacing: -0.035em;
+    line-height: 1;
+    transition: transform 0.55s var(--ease-out);
+  }
+
+  .service-row:hover .service-row__title {
+    transform: translateX(0.4rem);
+  }
+
+  .service-row__arrow {
+    display: grid;
+    place-items: center;
+    width: 3rem;
+    height: 3rem;
+    border: 1px solid currentColor;
+    transition: transform 0.55s var(--ease-out), background-color var(--dur);
+  }
+
+  .service-row__arrow :global(svg) {
+    width: 1.2rem;
+    height: 1.2rem;
+  }
+
+  .service-row:hover .service-row__arrow {
+    background: var(--color-signal);
+    border-color: var(--color-signal);
+    color: var(--color-ink);
+    transform: rotate(-45deg);
+  }
+
+  @media (max-width: 700px) {
+    .service-row {
+      grid-template-columns: 2rem 1fr auto;
+      gap: var(--space-xs);
+    }
+    .service-row__price {
+      grid-column: 2;
+      grid-row: 2;
+    }
+    .service-row__arrow {
+      grid-row: 1 / span 2;
+      grid-column: 3;
+      width: 2.5rem;
+      height: 2.5rem;
+    }
+  }
+
+  /* Work showcase */
+  .work-showcase {
+    position: relative;
+    z-index: 1;
+    padding-block: var(--space-2xl);
+    overflow: hidden;
+  }
+
+  .work-showcase__track {
+    display: grid;
+    gap: var(--space-xl);
+    padding-inline: var(--gutter);
+    max-width: var(--max);
+    margin-inline: auto;
+  }
+
+  .work-showcase__title {
+    font-size: var(--step-5);
+    letter-spacing: -0.045em;
+    max-width: 8ch;
+  }
+
+  .work-showcase__note {
+    margin-top: var(--space-m);
+    max-width: 34ch;
+  }
+
+  .work-showcase__all {
+    margin-top: var(--space-m);
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .work-showcase__progress {
+    display: none;
+  }
+
+  /* Desktop: one long row that the page scrolls sideways through */
+  .work-showcase:global(.is-horizontal) {
+    height: 100svh;
+    padding-block: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .work-showcase:global(.is-horizontal) .work-showcase__track {
+    display: flex;
+    align-items: center;
+    gap: clamp(2rem, 4vw, 5rem);
+    width: max-content;
+    max-width: none;
+    margin: 0;
+    padding-inline: max(var(--gutter), (100vw - var(--max)) / 2 + var(--gutter)) 10vw;
+    will-change: transform;
+  }
+
+  .work-showcase:global(.is-horizontal) .work-showcase__intro {
+    width: min(26rem, 32vw);
+    flex: none;
+  }
+
+  .work-showcase:global(.is-horizontal) .work-showcase__item {
+    width: min(58vw, 64rem);
+    flex: none;
+  }
+
+  .work-showcase:global(.is-horizontal) .work-showcase__next {
+    width: min(34vw, 30rem);
+  }
+
+  .work-showcase:global(.is-horizontal) .work-showcase__progress {
+    display: block;
+    position: absolute;
+    left: var(--gutter);
+    right: var(--gutter);
+    bottom: var(--space-l);
+    height: 2px;
+    background: var(--color-rule-dark);
+  }
+
+  .work-showcase__progress span {
+    display: block;
+    height: 100%;
+    background: var(--color-signal);
+    transform-origin: left;
+  }
+
+  @media (min-width: 900px) {
+    .work-showcase:not(:global(.is-horizontal)) .work-showcase__track {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .next-card {
+    display: grid;
+    align-content: space-between;
+    gap: var(--space-l);
+    min-height: 100%;
+    aspect-ratio: 4 / 5;
+    padding: var(--space-l);
+    border: 1px solid var(--line);
+    text-decoration: none;
+    transition: background-color var(--dur-slow) var(--ease-out);
+  }
+
+  .next-card:hover {
+    background: var(--color-ink-soft);
+  }
+
+  .next-card__title {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: var(--step-4);
+    letter-spacing: -0.04em;
+    line-height: 0.95;
+  }
+
+  .next-card .btn {
+    justify-self: start;
+  }
+
+  @media (max-width: 899px) {
+    .next-card {
+      aspect-ratio: auto;
+    }
+  }
+
+  /* Process */
+  .process-section__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 24rem), 1fr));
+    gap: var(--space-xl);
+  }
+
+  .process-section__head {
+    align-self: start;
+  }
+
+  @media (min-width: 900px) {
+    .process-section__head {
+      position: sticky;
+      top: calc(var(--header-h) + var(--space-l));
+    }
+  }
+
+  .process-section__intro {
+    margin-top: var(--space-m);
+  }
+
+  .process-list {
+    position: relative;
+    padding-left: var(--space-l);
+  }
+
+  .process-list__steps {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: var(--space-xl);
+  }
+
+  .process-list::before,
+  .process-list__line {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--color-rule);
+  }
+
+  .process-list__line {
+    background: var(--color-signal);
+    transform-origin: top;
+  }
+
+  .process-step {
+    position: relative;
+    display: grid;
+    gap: var(--space-xs);
+    padding-block: var(--space-s);
+  }
+
+  .process-step::before {
+    content: '';
+    position: absolute;
+    left: calc(-1 * var(--space-l) - 6px);
+    top: calc(var(--space-s) + 0.2rem);
+    width: 14px;
+    height: 14px;
+    background: var(--color-paper);
+    border: 2px solid var(--color-rule);
+    transition: background-color var(--dur-slow) var(--ease-out), border-color var(--dur-slow) var(--ease-out);
+  }
+
+  .process-step__title {
+    font-size: var(--step-4);
+    letter-spacing: -0.045em;
+    transition: transform var(--dur-slow) var(--ease-out);
+    transform-origin: left;
+  }
+
+  .process-step:global(.is-active)::before {
+    background: var(--color-signal);
+    border-color: var(--color-ink);
+  }
+
+  .process-step:global(.is-active) .process-step__title {
+    transform: translateX(0.5rem);
+  }
+
+  /* About teaser */
+  .about-teaser__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+    gap: var(--space-xl);
+    align-items: center;
+  }
+
+  .about-teaser__photo :global(.about-teaser__ph) {
+    aspect-ratio: 4 / 5;
+    max-height: 80svh;
+  }
+
+  .about-teaser__text {
+    display: grid;
+    gap: var(--space-m);
+    justify-items: start;
+  }
+</style>

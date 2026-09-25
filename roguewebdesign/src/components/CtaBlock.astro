@@ -1,0 +1,61 @@
+---
+import Arrow from './Arrow.astro';
+import { site } from '../data/site';
+
+interface Props {
+  title?: string;
+  body?: string;
+}
+const { title = 'Got a trade? Let’s get you found.', body = `Tell me about your business and I’ll come back with ideas and a clear price. ${site.replyPromise}` } = Astro.props;
+---
+
+<section class="cta theme-signal">
+  <div class="container cta__inner">
+    <p class="label eyebrow label--fg">Next step</p>
+    <h2 class="cta__title" data-split>{title}</h2>
+    <div class="cta__row">
+      <p class="cta__body" data-reveal>{body}</p>
+      <div data-magnetic data-reveal>
+        <a class="btn btn--ink cta__btn" href="/contact/">Start your site <Arrow /></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta {
+    position: relative;
+    z-index: 1;
+    padding-block: var(--space-2xl);
+  }
+
+  .cta__title {
+    font-size: var(--step-6);
+    line-height: 0.88;
+    letter-spacing: -0.045em;
+    max-width: 12ch;
+  }
+
+  .cta__row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    justify-content: space-between;
+    gap: var(--space-l);
+    margin-top: var(--space-xl);
+    padding-top: var(--space-m);
+    border-top: 1px solid var(--line);
+  }
+
+  .cta__body {
+    font-size: var(--step-1);
+    line-height: 1.45;
+    max-width: 38ch;
+  }
+
+  .cta__btn {
+    min-height: 4.25rem;
+    padding-inline: 2.2rem;
+    font-size: var(--step-1);
+  }
+</style>

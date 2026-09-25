@@ -1,0 +1,74 @@
+---
+import { trades } from '../data/site';
+interface Props {
+  items?: string[];
+  label?: string;
+}
+const { items = trades, label = 'Trades I build websites for' } = Astro.props;
+---
+
+<section class="marquee theme-signal" aria-label={label}>
+  <ul class="visually-hidden">
+    {items.map((t) => <li>{t}</li>)}
+  </ul>
+  <div class="marquee__band" aria-hidden="true">
+    <div class="marquee__track" data-marquee>
+      {[0, 1].map(() => (
+        <div class="marquee__set">
+          {items.map((t) => (
+            <span class="marquee__item">{t}<svg viewBox="0 0 24 24" class="marquee__star"><path d="M12 0l2.6 9.4L24 12l-9.4 2.6L12 24l-2.6-9.4L0 12l9.4-2.6z" fill="currentColor" /></svg></span>
+          ))}
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .marquee {
+    position: relative;
+    z-index: 2;
+    background: transparent;
+    padding-block: var(--space-l);
+    overflow: hidden;
+  }
+
+  .marquee__band {
+    background: var(--color-signal);
+    color: var(--color-ink);
+    padding-block: clamp(0.9rem, 0.6rem + 1vw, 1.6rem);
+    rotate: -2deg;
+    width: 110%;
+    margin-left: -5%;
+    border-block: 1px solid var(--color-ink);
+  }
+
+  .marquee__track {
+    display: flex;
+    width: max-content;
+  }
+
+  .marquee__set {
+    display: flex;
+    flex: none;
+  }
+
+  .marquee__item {
+    display: inline-flex;
+    align-items: center;
+    gap: clamp(1rem, 0.5rem + 2vw, 2.5rem);
+    padding-right: clamp(1rem, 0.5rem + 2vw, 2.5rem);
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: var(--step-4);
+    letter-spacing: -0.035em;
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  .marquee__star {
+    width: 0.5em;
+    height: 0.5em;
+    flex: none;
+  }
+</style>

@@ -1,0 +1,94 @@
+---
+import Logo from './Logo.astro';
+import ContactDetails from './ContactDetails.astro';
+import { nav, site } from '../data/site';
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer theme-ink">
+  <div class="container">
+    <div class="site-footer__grid">
+      <div>
+        <p class="label eyebrow">Get in touch</p>
+        <ContactDetails />
+      </div>
+      <nav aria-label="Footer">
+        <p class="label eyebrow">Pages</p>
+        <ul role="list" class="site-footer__nav">
+          <li><a class="link" href="/">Home</a></li>
+          {nav.map((item) => <li><a class="link" href={item.href}>{item.label}</a></li>)}
+        </ul>
+      </nav>
+      <div>
+        <p class="label eyebrow">Based in</p>
+        <p>{site.region}, working with trades across the county.</p>
+        <p class="muted site-footer__small">{site.replyPromise}</p>
+      </div>
+    </div>
+
+    <div class="site-footer__mark" data-footer-mark>
+      <Logo />
+    </div>
+
+    <div class="site-footer__base label">
+      <span>&copy; {year} {site.name}. {site.owner}.</span>
+      <a class="link" href="#top" data-scroll-top>Back to top <span aria-hidden="true">&uarr;</span></a>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    position: relative;
+    z-index: 1;
+    padding-top: var(--space-2xl);
+    padding-bottom: var(--space-m);
+    overflow: hidden;
+  }
+
+  .site-footer__grid {
+    display: grid;
+    gap: var(--space-l);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+    padding-bottom: var(--space-xl);
+  }
+
+  .site-footer__nav {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: 0.35rem;
+  }
+
+  .site-footer__nav a {
+    text-decoration: none;
+    display: inline-block;
+    padding-block: 0.3rem;
+  }
+
+  .site-footer__small {
+    margin-top: var(--space-xs);
+    font-size: var(--step--1);
+  }
+
+  .site-footer__mark {
+    color: var(--color-paper);
+    padding-block: var(--space-m);
+    border-top: 1px solid var(--line);
+    overflow: hidden;
+  }
+
+  .site-footer__base {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--space-s);
+    padding-top: var(--space-s);
+    border-top: 1px solid var(--line);
+  }
+
+  .site-footer__base a {
+    text-decoration: none;
+    color: var(--fg);
+  }
+</style>

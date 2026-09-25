@@ -1,0 +1,25 @@
+---
+// The roguewebdesign wordmark, outlined so it renders identically everywhere.
+// The "r" is signal orange and deliberately out of line.
+import wordmark from '../assets/brand/wordmark.svg?raw';
+
+interface Props {
+  class?: string;
+}
+const { class: className } = Astro.props;
+const svg = wordmark.replace('role="img" aria-label="roguewebdesign"', 'aria-hidden="true" focusable="false"');
+---
+
+<span class:list={['logo', className]} set:html={svg} />
+
+<style>
+  .logo {
+    display: block;
+    line-height: 0;
+  }
+  .logo :global(svg) {
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+</style>

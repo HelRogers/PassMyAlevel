@@ -289,13 +289,15 @@ p {
   transition: transform 0.5s var(--ease-out);
 }
 
-.btn:hover {
-  color: var(--btn-fill-fg);
-  border-color: var(--btn-fill);
-}
+@media (hover: hover) {
+  .btn:hover {
+    color: var(--btn-fill-fg);
+    border-color: var(--btn-fill);
+  }
 
-.btn:hover::before {
-  transform: translateY(0);
+  .btn:hover::before {
+    transform: translateY(0);
+  }
 }
 
 .btn:active {

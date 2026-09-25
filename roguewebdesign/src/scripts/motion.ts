@@ -210,19 +210,20 @@ function setupCursor() {
 function setupTransitions() {
   const wipe = document.querySelector<HTMLElement>('[data-wipe]');
   if (!wipe || reducedMotion) return;
+  gsap.set(wipe, { y: 0, yPercent: 100 });
 
   document.addEventListener('astro:before-preparation', (event: any) => {
     const load = event.loader;
     event.loader = async () => {
       closeMenu(true);
-      gsap.set(wipe, { visibility: 'visible', yPercent: 100 });
+      gsap.set(wipe, { visibility: 'visible', y: 0, yPercent: 100 });
       const cover = gsap.to(wipe, { yPercent: 0, duration: 0.6, ease: EASE_IN_OUT });
       await Promise.all([cover.then(), load()]);
     };
   });
 
   document.addEventListener('astro:page-load', () => {
-    if (gsap.getProperty(wipe, 'yPercent') === 0 && getComputedStyle(wipe).visibility === 'visible') {
+    if (wipe.style.visibility === 'visible') {
       gsap.to(wipe, {
         yPercent: -100,
         duration: 0.7,
@@ -585,7 +586,8 @@ function magnetic() {
 /* ------------------------------------------------------------------ */
 
 function initPage() {
-  root.classList.add('motion-ok', 'motion-ready');
+  root.classList.add('motion-ready');
+  if (!reducedMotion) root.classList.add('motion-ok');
   setupMenu();
 
   const scrollTop = document.querySelector<HTMLElement>('[data-scroll-top]');

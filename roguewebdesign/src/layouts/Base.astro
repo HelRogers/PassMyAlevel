@@ -179,9 +179,8 @@ const jsonLd = {
     place-items: center;
     background: var(--color-signal);
     color: var(--color-ink);
-    transform: translateY(100%);
     pointer-events: none;
-    visibility: hidden;
+    visibility: hidden; /* motion.ts positions it with GSAP */
   }
 
   .wipe__logo {

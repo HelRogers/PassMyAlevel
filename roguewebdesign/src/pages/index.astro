@@ -345,6 +345,10 @@ import { site } from '../data/site';
     margin-inline: auto;
   }
 
+  .work-showcase__track > * {
+    min-width: 0;
+  }
+
   .work-showcase__title {
     font-size: var(--step-5);
     letter-spacing: -0.045em;
@@ -356,8 +360,15 @@ import { site } from '../data/site';
     max-width: 34ch;
   }
 
+  .work-showcase__all::after {
+    bottom: 0.5rem;
+  }
+
   .work-showcase__all {
-    margin-top: var(--space-m);
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    margin-top: var(--space-s);
     text-decoration: none;
     font-weight: 500;
   }

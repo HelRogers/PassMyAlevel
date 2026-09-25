@@ -82,7 +82,7 @@ const state = Flip.getState('.hero-image'); navigate(); Flip.from(state, { durat
 
 ## Proposed direction (overrides the generated values above where they conflict)
 
-Status: awaiting approval.
+Status: approved and built. See the site in this folder.
 
 - **Concept:** "Off the grid". A visible editorial grid runs through every page, and the design breaks it on purpose. One letter in the wordmark never lines up.
 - **Style:** editorial brutalism. Visible rules, sharp corners, big type. Keep the generated brutalist structure, but use smooth, purposeful motion instead of the "instant, no transitions" note above.

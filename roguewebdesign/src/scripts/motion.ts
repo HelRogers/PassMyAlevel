@@ -93,8 +93,9 @@ window.addEventListener(
 /* ------------------------------------------------------------------ */
 
 function playIntro() {
-  const intro = document.querySelector<HTMLElement>('[data-intro]');
-  if (!intro || introFinished) return;
+  const found = document.querySelector<HTMLElement>('[data-intro]');
+  if (!found || introFinished) return;
+  const intro: HTMLElement = found;
 
   try {
     sessionStorage.setItem('rwd-intro', '1');
@@ -397,7 +398,8 @@ function reveals() {
     ScrollTrigger.batch(Array.from(group.children), { start: 'top 90%', once: true, onEnter: show });
   });
 
-  // Headlines reveal line by line from behind a mask.
+  // Headlines reveal line by line from behind a mask. Use on headings only:
+  // SplitText adds an aria-label, which is not allowed on paragraphs.
   $$('[data-split]').forEach((el) => {
     SplitText.create(el, {
       type: 'lines',

@@ -62,8 +62,14 @@ const year = new Date().getFullYear();
 
   .site-footer__nav a {
     text-decoration: none;
-    display: inline-block;
-    padding-block: 0.3rem;
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  .site-footer__nav a::after {
+    bottom: 0.55rem;
   }
 
   .site-footer__small {
@@ -88,7 +94,15 @@ const year = new Date().getFullYear();
   }
 
   .site-footer__base a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    margin-block: -0.75rem;
     text-decoration: none;
     color: var(--fg);
+  }
+
+  .site-footer__base a::after {
+    bottom: 0.7rem;
   }
 </style>

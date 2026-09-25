@@ -13,8 +13,9 @@ import { projects } from '../../data/projects';
     intro="Four concept builds for the kinds of businesses I work with. Each case study explains the thinking behind the design, not just how it looks."
   />
 
-  <section class="section work-grid-section theme-ink" aria-label="Projects">
+  <section class="section work-grid-section theme-ink" aria-labelledby="projects-title">
     <div class="container">
+      <h2 id="projects-title" class="visually-hidden">Projects</h2>
       <ul class="work-grid" role="list">
         {projects.map((project, i) => (
           <li class:list={['work-grid__item', { 'work-grid__item--offset': i % 2 === 1 }]} data-reveal>

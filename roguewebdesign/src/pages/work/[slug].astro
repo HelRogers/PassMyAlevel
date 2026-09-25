@@ -26,7 +26,7 @@ const { project, index, next } = Astro.props;
     <header class="cs-hero">
       <div class="container">
         <p class="label eyebrow" data-reveal>
-          <a class="link" href="/work/">Work</a>&nbsp;/ {String(index + 1).padStart(2, '0')}
+          <a class="link" href="/work/">Work</a> / {String(index + 1).padStart(2, '0')}
         </p>
         <h1 class="cs-hero__title" data-split>{project.name}</h1>
         <p class="cs-hero__headline" data-reveal>{project.headline}</p>
@@ -60,7 +60,7 @@ const { project, index, next } = Astro.props;
       <div class="container cs-two">
         <p id="brief-title" class="label eyebrow">The brief</p>
         <div>
-          <p class="cs-brief__text" data-split>{project.brief}</p>
+          <p class="cs-brief__text" data-reveal>{project.brief}</p>
           {project.concept && (
             <p class="muted cs-note" data-reveal>
               This is a concept build: a design made to show what a site for this trade could look like, rather than paid client work.
@@ -124,8 +124,16 @@ const { project, index, next } = Astro.props;
   }
 
   .cs-hero .eyebrow a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    margin-block: -0.75rem;
     text-decoration: none;
     color: var(--fg);
+  }
+
+  .cs-hero .eyebrow a::after {
+    bottom: 0.7rem;
   }
 
   .cs-hero__title {
@@ -332,9 +340,11 @@ const { project, index, next } = Astro.props;
   }
 
   .next-project__name {
+    min-width: 0;
+    overflow-wrap: break-word;
     font-family: var(--font-display);
     font-weight: 800;
-    font-size: var(--step-5);
+    font-size: clamp(2rem, 0.9rem + 6vw, 6.8rem);
     letter-spacing: -0.045em;
     line-height: 0.9;
     transition: transform 0.7s var(--ease-out);

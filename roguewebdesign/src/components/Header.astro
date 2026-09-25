@@ -82,9 +82,13 @@ const isCurrent = (href: string) => path === href || (href !== '/' && path.start
   }
 
   .site-header__logo {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
     width: clamp(9.5rem, 8rem + 5vw, 12rem);
+    min-width: 0;
     color: inherit;
-    flex: none;
+    flex: 0 1 auto;
   }
 
   .site-nav {
@@ -116,6 +120,7 @@ const isCurrent = (href: string) => path === href || (href !== '/' && path.start
 
   .menu-toggle {
     display: none;
+    flex: none;
     margin-left: auto;
     width: 3rem;
     height: 3rem;
@@ -184,7 +189,7 @@ const isCurrent = (href: string) => path === href || (href !== '/' && path.start
     margin-top: var(--space-l);
   }
 
-  @media (max-width: 860px) {
+  @media (max-width: 54em) {
     .site-nav,
     .site-header__cta {
       display: none;
